@@ -179,7 +179,7 @@ canvas.addEventListener("wheel", function (event) {
 
 
     var material = new BABYLON.StandardMaterial("material", scene);
-    material.diffuseTexture = new BABYLON.Texture("renders/renders_bloquera/Untitled1.jpg", scene);
+    material.diffuseTexture = new BABYLON.Texture("renders/renders_bloquera/Untitled1.JPG", scene);
     ground.material = material;
     ground.material.specularColor = new BABYLON.Color3(0, 0, 0); // Elimina el brillo especular
 
@@ -200,7 +200,7 @@ canvas.addEventListener("wheel", function (event) {
     var render_ = 2;
     boton.onPointerUpObservable.add(function() {
         if (render_ <= 16) {
-    material.diffuseTexture = new BABYLON.Texture("renders/renders_bloquera/Untitled"+render_.toString()+".jpg", scene);
+    material.diffuseTexture = new BABYLON.Texture("renders/renders_bloquera/Untitled"+render_.toString()+".JPG", scene);
     render_ += 1;
     
     }
