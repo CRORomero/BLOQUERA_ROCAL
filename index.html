@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Babylon.js sample code</title>
+
+        <!-- Babylon.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+        <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+            
+            #canvasZone {
+                width: 100%;
+                height: 100%;
+            }
+            #redirect-mezcla {
+              position: absolute; /* Posicionamiento absoluto */
+              top: 20vh; /* Posiciona el botón en el 50% de la altura del viewport */
+              left: 90vw; /* Posiciona el botón en el 50% del ancho del viewport */
+              transform: translate(-50%, -50%); /* Centra el botón */
+              width: 15vw; /* El ancho del div es el 90% del ancho del viewport */
+              height: 5vh; /* La altura del div es el 90% de la altura del viewport */
+              color: white;
+              font-size: 20px;
+              background-color: rgba(255, 0 , 0, 0.8);
+
+            }
+            #redirect-mesa {
+              position: absolute; /* Posicionamiento absoluto */
+              top: 25vh; /* Posiciona el botón en el 50% de la altura del viewport */
+              left: 90vw; /* Posiciona el botón en el 50% del ancho del viewport */
+              transform: translate(-50%, -50%); /* Centra el botón */
+              width: 15vw; /* El ancho del div es el 90% del ancho del viewport */
+              height: 5vh; /* La altura del div es el 90% de la altura del viewport */
+              color: white;
+              font-size: 15px;
+              background-color: rgba(255, 0 , 0, 0.8);
+
+            }
+
+            #redirect-banda {
+              position: absolute; /* Posicionamiento absoluto */
+              top: 30vh; /* Posiciona el botón en el 50% de la altura del viewport */
+              left: 90vw; /* Posiciona el botón en el 50% del ancho del viewport */
+              transform: translate(-50%, -50%); /* Centra el botón */
+              width: 15vw; /* El ancho del div es el 90% del ancho del viewport */
+              height: 5vh; /* La altura del div es el 90% de la altura del viewport */
+              color: white;
+              font-size: 15px;
+              background-color: rgba(255, 0 , 0, 0.8);
+
+            }
+
+            
+            
+
+            #redirect-renders {
+              position: absolute; /* Posicionamiento absoluto */
+              top: 35vh; /* Posiciona el botón en el 50% de la altura del viewport */
+              left: 90vw; /* Posiciona el botón en el 50% del ancho del viewport */
+              transform: translate(-50%, -50%); /* Centra el botón */
+              width: 15vw; /* El ancho del div es el 90% del ancho del viewport */
+              height: 5vh; /* La altura del div es el 90% de la altura del viewport */
+              color: white;
+              font-size: 15px;
+              background-color: rgba(139, 0, 255, 0.8);
+
+            }
+
+            #text-container {
+              position: absolute; /* Posicionamiento absoluto */
+              top: 30vh; /* Posiciona el elemento en el 50% de la altura del viewport */
+              left: 00vw; /* Posiciona el elemento en el 50% del ancho del viewport */
+              color: white;
+              font-size: auto;
+              width: 20vw; /* El ancho del div es el 90% del ancho del viewport */
+              height: 50vh; /* La altura del div es el 90% de la altura del viewport */
+              background-color: rgba(0  , 0 , 150, 0.5);
+              padding: 10px;
+              border-radius: 20px;
+              font-size: 15px;
+              font-family: Arial, sans-serif;
+              z-index: 99; 
+              
+            }
+
+            #titles {
+              position: absolute; /* Posicionamiento absoluto */
+              top: 1vh; /* Posiciona el elemento en el 50% de la altura del viewport */
+              left: 40vw; /* Posiciona el elemento en el 50% del ancho del viewport */
+              color: white;
+              font-size: auto;
+              font-size: 30px;
+              font-family: Arial, sans-serif;
+              overflow: hidden;
+              white-space: nowrap;
+              animation: typing 4s steps(30, end) forwards;
+            }
+
+            .links-style {
+                font-size: auto;
+            }
+            a {
+                color: white;
+            }
+            a:hover {
+                color: red;
+            }
+
+            .recuadro {
+              position: absolute; /* Posicionamiento absoluto */
+              top: 0vh; /* Posiciona el elemento en el 50% de la altura del viewport */
+              left: 20vw; /* Posiciona el elemento en el 50% del ancho del viewport */
+              width: 60vw; /* El ancho del div es el 90% del ancho del viewport */
+              height: 7vh; /* La altura del div es el 90% de la altura del viewport */
+              background-color: rgba(255, 31, 0, 0.7);
+              border-radius: 10px;
+            }
+            @keyframes typing {
+                from {
+                  width: 0;
+                }
+                to {
+                  width: 100%;
+                }
+            }
+
+
+        </style>
+    </head>
+<body>
+    <div id="canvasZone"><canvas id="renderCanvas"></canvas></div>
+    <button id="redirect-mezcla">Mezcladora</button>
+    <button id="redirect-banda">Banda Transportadora</button>
+    <button id= "redirect-mesa">Mesa Vibratoria</button>
+    <button id= "redirect-renders">Renders de Maquina</button>
+
+    <div class="recuadro"></div>
+
+    <div id="titles"></div>
+
+    <div id="text-container">
+          <h1>Caracteristicas</h1>
+          Esta maquina permite generar 4 piezas de bloques de hormigon por minuto, el cual puede generar hasta 1920 piezas en una jornada laboral de 8 hrs, esto depende tambien de las condiciones optimas de su funcionamiento, como lo son;
+          <li >Numero de personal.</li>
+          <li>Disponibilidad de materiales (Tanto para su fabricacion como para su traslado).</li>
+          <li>Funcionamiento optimo de la parte electrica y mecanica de la maquina.</li>
+
+        <h4>Si quieres conocer mas sobre esta maquina, por favor, contactame:</h4> 
+        <p class="links-style"><a href='https://shorturl.at/hqIMW'>LinkedIn: Ing. Oswaldo Romero C.</a></p>
+        <p class="links-style"><a href='https://wa.link/5b4kpe'>Whatsapp: +52 2223592280</a></p>
+        Esta pagina fue realizada con el framework:
+        <p class="links-style"><a href='https://www.babylonjs.com/'>Babylon.js</a></p>
+    </div>
+
+
+
+    <script>
+
+
+
+
+        var redirectButton_mezcla = document.getElementById("redirect-mezcla");
+
+        redirectButton_mezcla.onclick = function() {
+        window.location.href = "/mezcladora.html";
+        }
+        var redirectButton_banda = document.getElementById("redirect-banda");
+
+        redirectButton_banda.onclick = function() {
+        window.location.href = "/banda_transportadora.html";
+        }
+
+        var redirectButton_mesa = document.getElementById("redirect-mesa");
+
+        redirectButton_mesa.onclick = function() {
+        window.location.href = "/bloquera.html";
+        }
+
+        var redirectButton_renders = document.getElementById("redirect-renders");
+
+        redirectButton_renders.onclick = function() {
+        window.location.href = "/renders.html";
+        }
+
+
+        var canvas = document.getElementById("renderCanvas");
+
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+        const createScene =  () => {
+    const scene = new BABYLON.Scene(engine);
+
+    /**** Set camera and light *****/
+    const camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(320), BABYLON.Tools.ToRadians(80), 100, new BABYLON.Vector3(0, 10, 0));
+    camera.attachControl(canvas, true);
+    const light1 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 100 , 0));
+    const light2 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(100, 0 , 0));
+    const light3 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 0, 100));
+    const light4 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, -100, 0));
+    const light5 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-100, 0 , 0));
+    const light6 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 0, -100));
+
+    //const box = BABYLON.MeshBuilder.CreateBox("box", {width: 2, height: 1, depth: 3});
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", {width:2000, height:2000});
+
+    var groundTexture = new BABYLON.Texture("TEXTURAS/amarillo_claro.jpg", scene);
+    var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+    groundMaterial.diffuseTexture = groundTexture;
+    ground.material = groundMaterial;
+
+
+
+var guiPanel = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        // Crear botón para la vista frontal
+var frontViewButton = BABYLON.GUI.Button.CreateSimpleButton("frontView", "Vista Frontal");
+frontViewButton.width = "150px";
+frontViewButton.height = "40px";
+frontViewButton.color = "white";
+frontViewButton.background = "orange";
+frontViewButton.top = "300vh";
+frontViewButton.left = "-500vw";
+frontViewButton.onPointerUpObservable.add(function() {
+    camera.position = new BABYLON.Vector3(BABYLON.Tools.ToRadians(90), 30, 150);
+    camera.setTarget(new BABYLON.Vector3(0, 10, 0));
+});
+
+// Crear botón para la vista isométrica
+var isoViewButton = BABYLON.GUI.Button.CreateSimpleButton("isoView", "Vista Isométrica");
+isoViewButton.width = "150px";
+isoViewButton.height = "40px";
+isoViewButton.color = "white";
+isoViewButton.background = "orange";
+isoViewButton.top = "300vh";
+isoViewButton.left = "-300vw";
+isoViewButton.onPointerUpObservable.add(function() {
+    camera.position = new BABYLON.Vector3(100, 100, 100);
+    camera.setTarget(new BABYLON.Vector3(0, 10, 0));
+});
+
+// Crear botón para la vista lateral
+var sideViewButton = BABYLON.GUI.Button.CreateSimpleButton("sideView", "Vista Lateral");
+sideViewButton.width = "150px";
+sideViewButton.height = "40px";
+sideViewButton.color = "white";
+sideViewButton.background = "orange";
+sideViewButton.top = "300vh";
+sideViewButton.left = "-100vw";
+sideViewButton.onPointerUpObservable.add(function() {
+    camera.position = new BABYLON.Vector3(150, 30, -7);
+    camera.setTarget(new BABYLON.Vector3(0,30,0));
+});
+
+// Crear botón para la vista de planta
+var topViewButton = BABYLON.GUI.Button.CreateSimpleButton("topView", "Vista de Planta");
+topViewButton.width = "150px";
+topViewButton.height = "40px";
+topViewButton.color = "white";
+topViewButton.background = "orange";
+topViewButton.top = "300vh";
+topViewButton.left = "100vw";
+topViewButton.onPointerUpObservable.add(function() {
+    camera.position = new BABYLON.Vector3(0, 150, 0);
+    camera.setTarget(BABYLON.Vector3.Zero());
+});
+
+
+// Crear el botón para la vista superior
+var rotateButton = BABYLON.GUI.Button.CreateSimpleButton("rotateView","Rotar modelo");
+rotateButton.width = "150px";
+rotateButton.height = "40px";
+rotateButton.color = "white";
+rotateButton.background = "orange";
+rotateButton.top = "300vh";
+rotateButton.left = "300vw";
+
+
+var chageColorButton = BABYLON.GUI.Button.CreateSimpleButton("changeColor", "Cambiar Color");
+chageColorButton.width = "150px";
+chageColorButton.height = "40px";
+chageColorButton.color = "white";
+chageColorButton.background = "orange";
+chageColorButton.top = "300vh";
+chageColorButton.left = "500vw";
+
+
+
+// Importar modelo
+var model;
+var originalPosition;
+var modelNode;
+
+
+BABYLON.SceneLoader.ImportMesh('', 'COMPLETO.glb', '', scene, function (newMeshes) {
+    // Escalado y posición del objeto
+    model = newMeshes[0];
+    model.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
+    model.position = new BABYLON.Vector3(-65, 0, -30);
+    
+    newMeshes.forEach(function (mesh) {
+        var material = new BABYLON.StandardMaterial("material" + mesh.name, scene);
+        material.diffuseColor = new BABYLON.Color3(0.05293801323988458, 0.3250849118951725,  0.45296829047783665);
+        mesh.material = material;
+        console.log(material.diffuseColor);
+    });
+    
+    // Crear un nodo de transformación vacío y asignar el modelo como su hijo
+    modelNode = new BABYLON.TransformNode("modelNode", scene);
+    model.setParent(modelNode);
+
+    // Establecer el pivote del modelo en su centro
+    model.setPivotPoint(BABYLON.Vector3.Zero());
+
+    
+
+
+
+    // Crear la animación de rotación
+    var rotateAnimation = new BABYLON.Animation("rotateAnimation", "rotation.y", 2, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+    // Definir los keyframes de la animación
+    var keyFrames = [];
+    keyFrames.push({ frame: 0, value: 0 });
+    keyFrames.push({ frame: 30, value: 2 * Math.PI });
+    rotateAnimation.setKeys(keyFrames);
+
+    // Agregar la animación al nodo de transformación del modelo
+    modelNode.animations.push(rotateAnimation);
+
+    var isRotating = false; // variable para saber si la animación está en curso o no
+
+rotateButton.onPointerDownObservable.add(function() {
+  if (!isRotating) { // si no está rotando, empieza la rotación
+    isRotating = true;
+    var rotateAnimation = scene.beginAnimation(modelNode, 0, 100, true);
+  } else { // si está rotando, detiene la rotación
+    isRotating = false;
+    scene.stopAnimation(modelNode);
+  }
+});
+
+chageColorButton.onPointerUpObservable.add(function(){
+
+     newMeshes.forEach(function (mesh) {
+        var material = new BABYLON.StandardMaterial("material" + mesh.name, scene);
+        material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+        mesh.material = material;
+    });
+
+});
+
+
+});
+
+// Crear regresar a la posicion original.
+
+
+
+
+
+
+
+
+
+
+
+// Agregar botones al panel de GUI
+guiPanel.addControl(frontViewButton);
+guiPanel.addControl(isoViewButton);
+guiPanel.addControl(sideViewButton);
+guiPanel.addControl(topViewButton);
+guiPanel.addControl(rotateButton);
+guiPanel.addControl(chageColorButton);
+
+
+    //Leave time for the sound file to load before playing it
+
+    
+    return scene;
+}
+        const titles = document.getElementById('titles');
+        titles.innerHTML = 'BLOQUERA MANUAL / ROCAL';
+
+                window.initFunction = async function() {
+                    
+                    
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
+
+                    window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        startRenderLoop(engine, canvas);
+        window.scene = createScene();};
+        initFunction().then(() => {sceneToRender = scene                    
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
